@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Trip;
+use App\Models\Driver;
+
 
 class User extends Authenticatable
 {
@@ -33,12 +36,15 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function routeNotificationForTwilio () {
+        return $this->phone;
+    }
+
+    public function driver() {
+        return $this->hasOne(Driver::class);
+    }
+
+    public function trips() {
+        return $this->hasMany(Trip::class);
+    }
 }
