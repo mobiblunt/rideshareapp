@@ -28,5 +28,17 @@ class DriverController extends Controller
         $user = $request->user();
         $user->update($request->only('name'));
 
+        $user->driver()->updateOrCreate($request->only([
+            'year',
+            'make',
+            'model',
+            'color',
+            'license_plate'
+        ]));
+
+        $user->load('driver');
+
+        return $user;
+
     }
 }
