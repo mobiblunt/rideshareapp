@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('trips', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Driver::class);
+            $table->foreignIdFor(Driver::class)->nullable();
             $table->boolean('is_started')->default(false);
             $table->boolean('is_completed')->default(false);
-            $table->json('origin')->nullablle();
-            $table->json('destination')->nullablle();
-            $table->string('destination_name')->nullablle();
-            $table->string('driver_location')->nullablle();
+            $table->json('origin')->nullable();
+            $table->json('destination')->nullable();
+            $table->string('destination_name')->nullable();
+            $table->string('driver_location')->nullable();
             $table->timestamps();
         });
     }
