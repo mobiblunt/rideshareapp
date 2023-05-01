@@ -1,6 +1,6 @@
 <script setup>
 import {vMaska} from 'maska'
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, onMounted } from 'vue';
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 
@@ -21,18 +21,20 @@ onMounted(() => {
     }
 })
 
-const formattedCred = computed(() => {
+const getFormattedCred = () => {
     
     return {
         phone: data.phone.replace(regex, ''),
         login_code: data.login_code
     }
-})
+}
 
 
 const handleLogin = () => {
     const regex = /[^\d]/g;
-    axios.post('http://localhost:8000/api/login', formattedCred)
+    axios.post('http://localhost:8000/api/login', {
+        phone: data.phone.replace(regex, '')
+    })
         .then((response) => {
             console.log(response.data)
             waitingOnVerification.value = true
@@ -46,7 +48,10 @@ const handleLogin = () => {
 const handleVerification = () => {
 
     const regex = /\D/g;
-    axios.post('http://localhost:8000/api/login/verify', formattedCred)
+    axios.post('http://localhost:8000/api/login/verify', {
+        phone: data.phone.replace(regex, ''),
+        login_code: data.login_code
+    })
         .then((response) => {
             console.log(response.data)
             localStorage.setItem('token', response.data)
